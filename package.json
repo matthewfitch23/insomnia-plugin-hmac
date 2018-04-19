@@ -1,0 +1,27 @@
+{
+  "name": "insomnia-plugin-kraken",
+  "version": "1.0.0",
+  "author": "Jacob Harter (https://github.com/jbharter)",
+  "homepage": "https://github.com/jbharter/insomnia-plugin-kraken",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jbharter/insomnia-plugin-kraken.git"
+  },
+  "keywords": [
+    "insomnia",
+    "insomnia-plugin",
+    "kraken",
+    "kraken-auth"
+  ],
+  "bugs": {
+    "url": "https://github.com/jbharter/insomnia-plugin-kraken/issues"
+  },
+  "insomnia": {
+    "name": "kraken",
+    "description": "Manage authentication with the Kraken Exchange"
+  },
+  "dependencies": {
+    "jssha":"2.3.1"
+  }
+}
