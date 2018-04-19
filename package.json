@@ -8,6 +8,7 @@
     "type": "git",
     "url": "https://github.com/jbharter/insomnia-plugin-kraken.git"
   },
+  "license" : "BSD-3-Clause",
   "keywords": [
     "insomnia",
     "insomnia-plugin",
