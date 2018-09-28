@@ -1,6 +1,8 @@
 # Insomnia Plugin - HMAC
 
-Helps authenticate API requests for development in the RESTful API client [Insomnia](https://insomnia.rest/) that require HMAC authentication
+Helps authenticate API requests for development in the RESTful API client [Insomnia](https://insomnia.rest/) that require HMAC authentication.
+
+This is based on a plugin originally created by [jbharter](https://github.com/jbharter/insomnia-plugin-kraken).
 
 ### Install
 - Navigate to Insomnia options
