@@ -1,26 +1,25 @@
 {
   "name": "insomnia-plugin-kraken",
   "version": "1.0.0",
-  "author": "Jacob Harter (https://github.com/jbharter)",
-  "homepage": "https://github.com/jbharter/insomnia-plugin-kraken",
+  "author": "Matthew Fitch (https://github.com/matthewfitch23)",
+  "homepage": "https://github.com/matthewfitch23/insomnia-plugin-hmac",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jbharter/insomnia-plugin-kraken.git"
+    "url": "https://github.com/matthewfitch23/insomnia-plugin-hmac.git"
   },
   "license" : "BSD-3-Clause",
   "keywords": [
     "insomnia",
     "insomnia-plugin",
-    "kraken",
-    "kraken-auth"
+    "hmac"
   ],
   "bugs": {
-    "url": "https://github.com/jbharter/insomnia-plugin-kraken/issues"
+    "url": "https://github.com/matthewfitch23/insomnia-plugin-hmac/issues"
   },
   "insomnia": {
-    "name": "kraken",
-    "description": "Manage authentication with the Kraken Exchange"
+    "name": "hmac",
+    "description": "HMAC authentication"
   },
   "dependencies": {
     "jssha":"2.3.1"
