@@ -8,7 +8,7 @@
     "type": "git",
     "url": "https://github.com/matthewfitch23/insomnia-plugin-hmac.git"
   },
-  "license" : "BSD-3-Clause",
+  "license": "BSD-3-Clause",
   "keywords": [
     "insomnia",
     "insomnia-plugin",
@@ -22,6 +22,6 @@
     "description": "HMAC authentication"
   },
   "dependencies": {
-    "jssha":"2.3.1"
+    "jssha": "2.3.1"
   }
 }
