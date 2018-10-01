@@ -1,78 +1,47 @@
 /* eslint-disable no-prototype-builtins, new-cap */
 
-const jsSHA = require('jssha');
+const CryptoJS = require('crypto-js');
 
-const krakenAPI = 'https://api.kraken.com';
+function encodeURL(str) {
+  return str.replace(/\+/g, '-').replace(/\//g, '_');
+}
+
+function computeHttpSignature(msg, key) {
+  const hash = CryptoJS.HmacSHA256(msg, key);
+  const hashInBase64 = encodeURL(CryptoJS.enc.Base64.stringify(hash));
+
+  return hashInBase64;
+}
+
+function computeSigningBase(req, date) {
+  console.log('computing signing base');
+  const { method } = req;
+  console.log('trimming target url');
+  let targetUrl = req.getUrl().trim(); // there may be surrounding ws
+  console.log('stripping hostname');
+  targetUrl = targetUrl.replace(new RegExp('^https?://[^/]+/'), '/'); // strip hostname
+  console.log('creating signing base');
+  const signingBase = `${method}\n${date}\n${targetUrl}`;
+  console.log('returning');
+  return signingBase;
+}
 
 module.exports.requestHooks = [
   (context) => {
-    // Doubt we'll get sent an invalid context, but you never know
-    if (context === null || context === undefined) {
-      return;
-    }
-    // Check that the request is real
-    if (!context.hasOwnProperty('request') ||
-        context.request === null ||
-        context.request === undefined ||
-        context.request.constructor.name !== 'Object') {
-      return;
-    }
+    console.log('start');
+    const timestamp = new Date().toISOString();
+    const message = computeSigningBase(context.request, timestamp);
+    console.log('getting sharedSecret');
+    const key = context.request.getEnvironmentVariable('sharedSecret');
+    const signature = computeHttpSignature(message, key);
 
-    const req = context.request;
-    // Check that the request has method getMethod, and that it is a function,
-    //  and that, that function returns "POST"
-    if (!req.hasOwnProperty('getMethod') ||
-        req.getMethod == null ||
-        req.getMethod.constructor.name !== 'Function' ||
-        (req.getMethod() !== 'POST')) {
-      return;
-    }
-
-    // Check that the request has method getUrl, and that it is a function,
-    //  and that, that function returns krakenAPI
-    if (!req.hasOwnProperty('getUrl') ||
-        req.getUrl == null ||
-        req.getUrl.constructor.name !== 'Function' ||
-        !req.getUrl().startsWith(krakenAPI)) {
-      return;
-    }
-
-    // Check that the url contains the word private, we don't want to sign
-    //  requests to the public endpoint
-    if (!req.getUrl().includes('private')) {
-      return;
-    }
-
-    // otherwise, and from here, we can assume that this is a valid request,
-    //  and also a request that we want to sign.
-    const effectiveBody = JSON.parse(req.getBodyText() || '{}');
-    const otp = req.getEnvironmentVariable('otp_override');
-    if (!effectiveBody.hasOwnProperty('nonce')) {
-      effectiveBody.nonce = new Date().getTime();
-    }
-    if (!effectiveBody.hasOwnProperty('otp') && otp != null) {
-      effectiveBody.otp = otp;
-    }
-    const { nonce } = effectiveBody;
-
-    if (context.request.getBodyText() != null) {
-      context.request.setBodyText(JSON.stringify(effectiveBody, null, 2));
-    }
-
-    const path = context.request.getUrl().replace(krakenAPI, '');
-
-    // API-Sign = Message signature using HMAC-SHA512 of (URI path + SHA256(nonce + POST data)) and base64 decoded secret API key
-    const key = context.request.getEnvironmentVariable('api_secret');
-
-    const sha256obj = new jsSHA('SHA-256', 'BYTES');
-    sha256obj.update(nonce + context.request.getBodyText() || '');
-    const hashDigest = sha256obj.getHash('BYTES');
-
-    const sha512obj = new jsSHA('SHA-512', 'BYTES');
-    sha512obj.setHMACKey(key, 'B64');
-    sha512obj.update(path);
-    sha512obj.update(hashDigest);
-
-    context.request.setHeader('API-Sign', sha512obj.getHMAC('B64'));
+    console.log('setting headers');
+    context.request.setHeader('X-Auth-Timestamp', timestamp);
+    context.request.setHeader('X-Auth-Signature', signature);
+    context.request.setHeader('X-Auth-Version', 1);
+    console.log(timestamp);
+    console.log(signature);
+    const headers = context.request.getHeaders();
+    console.log(JSON.stringify(headers));
   },
 ];

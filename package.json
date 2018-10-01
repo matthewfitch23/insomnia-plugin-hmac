@@ -1,6 +1,6 @@
 {
-  "name": "insomnia-plugin-kraken",
-  "version": "1.0.0",
+  "name": "insomnia-plugin-hmac",
+  "version": "1.0.1",
   "author": "Matthew Fitch (https://github.com/matthewfitch23)",
   "homepage": "https://github.com/matthewfitch23/insomnia-plugin-hmac",
   "main": "index.js",
@@ -15,7 +15,8 @@
   "keywords": [
     "insomnia",
     "insomnia-plugin",
-    "hmac"
+    "hmac",
+    "auth"
   ],
   "bugs": {
     "url": "https://github.com/matthewfitch23/insomnia-plugin-hmac/issues"
@@ -25,7 +26,7 @@
     "description": "HMAC authentication"
   },
   "dependencies": {
-    "jssha": "2.3.1"
+    "crypto-js": "^3.1.9-1"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
